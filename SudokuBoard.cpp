@@ -24,31 +24,35 @@ SudokuBoard& SudokuBoard::instance() {
 
 bool SudokuBoard::posCheck(int row, int col) 
 {
-    
+    int val = this->board.at(row).at(col);
     // Check no matching value in the same Column
-    for(int row_it = 0; row_it < 9; row_it++)
+    for(int i = 0; i < 9; i++)
     {
         try {
-            if( row_it != row &&
-                (this->board).at(row_it).at(col) == this->board.at(row).at(col) ) {
-                    
+                if( i != row &&
+                (this->board).at(i).at(col) == val ) {
                     return false;
                 }
             }
-            catch(...) { /* Just accessing out of boundry, safe skip here */ }
-    }
-    
-    
-    // Check no matching value in the same Row
-    for(int col_it = 0; col_it < 9; col_it++)
-    {
+        catch(...) { /* Just accessing out of boundry, safe skip here */ }
+            
         try {
-            if( col_it != col && 
-            (this->board).at(row).at(col_it) == this->board.at(row).at(col) ) {
-
-                return false;
+                if( i != col && 
+                    (this->board).at(row).at(i) == val ) {
+                    return false;
+                }  
             }
-        }
+        catch(...) { /* Just accessing out of boundry, safe skip here */ }
+
+        try {
+                int boxRow = 3 * (row / 3) + (i / 3);
+                int boxCol = 3 * (col / 3) + (i % 3);
+
+                if( (boxRow != row || boxCol != col) &&
+                (this->board).at(boxRow).at(boxCol) == val ) {
+                    return false;
+                }  
+            }
         catch(...) { /* Just accessing out of boundry, safe skip here */ }
     }
 

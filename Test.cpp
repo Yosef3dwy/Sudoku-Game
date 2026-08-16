@@ -22,9 +22,9 @@ int main() {
     
     // Test Invalid Placing
         // Rows and Columns Check
-        cout << ((SuBoard.placePos(1, 2, 4))? "Placed Successful": "Failed to Place")  << endl << endl;
+        cout << ((SuBoard.placePos(1, 6, 4))? "Placed Successful": "Failed to Place")  << endl << endl;
         // Same Block Check "To be Handled"
-        // cout << ((SuBoard.placePos(1, 2, 4))? "Placed Successful": "Failed to Place")  << endl << endl;
+        cout << ((SuBoard.placePos(2, 2, 4))? "Placed Successful": "Failed to Place")  << endl << endl;
     
     // Test Invalid Row & Column & Value
     cout << ((SuBoard.placePos(10, 2, 4))? "Placed Successful": "Failed to Place")  << endl << endl;

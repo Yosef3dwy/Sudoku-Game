@@ -1,5 +1,5 @@
 #include <iostream>
-#include "SudokuBoard.h"
+#include "../Board/SudokuBoard.h"
 #include "SudokuSolver.h"
 
 using namespace std;

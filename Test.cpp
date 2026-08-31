@@ -1,6 +1,6 @@
 #include <iostream>
-#include "SudokuBoard.h"
-#include "SudokuSolver.h"
+#include "Board/SudokuBoard.h"
+#include "Solver/SudokuSolver.h"
 
 
 using namespace std;

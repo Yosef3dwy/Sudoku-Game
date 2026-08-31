@@ -5,103 +5,160 @@
 
 using namespace std;
 
-
-SudokuBoard::SudokuBoard() {
+SudokuBoard::SudokuBoard()
+{
 
     // Reserving all the Board slots in the 2D vector array
     board.resize(9);
-    for(int i = 0; i < 9; i++) {
+    for (int i = 0; i < 9; i++)
+    {
         board[i].resize(9);
     }
 }
 
-SudokuBoard& SudokuBoard::instance() {
+SudokuBoard &SudokuBoard::instance()
+{
     static SudokuBoard instance;
     return instance;
 }
 
-
-
-bool SudokuBoard::posCheck(int row, int col) 
+bool SudokuBoard::posCheck(int row, int col)
 {
     int val = this->board.at(row).at(col);
     // Check no matching value in the same Column
-    for(int i = 0; i < 9; i++)
+    for (int i = 0; i < 9; i++)
     {
-        try {
-                if( i != row &&
-                (this->board).at(i).at(col) == val ) {
-                    return false;
-                }
+        try
+        {
+            if (i != row &&
+                (this->board).at(i).at(col) == val)
+            {
+                return false;
             }
-        catch(...) { /* Just accessing out of boundry, safe skip here */ }
-            
-        try {
-                if( i != col && 
-                    (this->board).at(row).at(i) == val ) {
-                    return false;
-                }  
-            }
-        catch(...) { /* Just accessing out of boundry, safe skip here */ }
+        }
+        catch (...)
+        { /* Just accessing out of boundry, safe skip here */
+        }
 
-        try {
-                int boxRow = 3 * (row / 3) + (i / 3);
-                int boxCol = 3 * (col / 3) + (i % 3);
-
-                if( (boxRow != row || boxCol != col) &&
-                (this->board).at(boxRow).at(boxCol) == val ) {
-                    return false;
-                }  
+        try
+        {
+            if (i != col &&
+                (this->board).at(row).at(i) == val)
+            {
+                return false;
             }
-        catch(...) { /* Just accessing out of boundry, safe skip here */ }
+        }
+        catch (...)
+        { /* Just accessing out of boundry, safe skip here */
+        }
+
+        try
+        {
+            int boxRow = 3 * (row / 3) + (i / 3);
+            int boxCol = 3 * (col / 3) + (i % 3);
+
+            if ((boxRow != row || boxCol != col) &&
+                (this->board).at(boxRow).at(boxCol) == val)
+            {
+                return false;
+            }
+        }
+        catch (...)
+        { /* Just accessing out of boundry, safe skip here */
+        }
     }
 
     return true;
 }
 
-int SudokuBoard::getPos(int conceptual_row, int conceptual_col) {
+void SudokuBoard::countEmpty()
+{
+    this->emptyCount = 0;
+    for (int i = 0; i < 9; i++)
+    {
+        for (int j = 0; j < 9; j++)
+        {
+            if (board[i][j] == 0)
+            {
+                this->emptyCount++;
+            }
+        }
+    }
+}
+
+
+int SudokuBoard::getPos(int conceptual_row, int conceptual_col)
+{
 
     return this->board.at(conceptual_row - 1).at(conceptual_col - 1);
 }
 
-bool SudokuBoard::placePos(int conceptual_row, int conceptual_col, int val) {
-    
+int SudokuBoard::getEmptyCount()
+{
+
+    return this->emptyCount;
+}
+
+bool SudokuBoard::placePos(int conceptual_row, int conceptual_col, int val)
+{
+
     int row = conceptual_row - 1;
     int col = conceptual_col - 1;
 
     // ---------------------------------------
     // These Validations must be handled by exceptions
     // ---------------------------------------
-    
+
     // Check the validity of the entered value number
-    if(val > 9 || val < 0) { cout << "Wrong Value Number" << endl; return false; }
-    
+    if (val > 9 || val < 1)
+    {
+        cout << "Wrong Value Number" << endl;
+        return false;
+    }
+
     // Check the validity of the entered row number
-    if(row > 8 || row < 0) { cout << "Wrong Row Number" << endl; return false; }
-    
+    if (row > 8 || row < 0)
+    {
+        cout << "Wrong Row Number" << endl;
+        return false;
+    }
+
     // Check the validity of the entered column cumer
-    if(col > 8 || col < 0) { cout << "Wrong Column Number" << endl; return false; }
-    
+    if (col > 8 || col < 0)
+    {
+        cout << "Wrong Column Number" << endl;
+        return false;
+    }
+
     // Check if putting a value that already exists in the choosed position
-    if(this->board.at(row).at(col) == val) { return true; }
+    if (this->board.at(row).at(col) == val)
+    {
+        return true;
+    }
 
     // Attempting to change the value in a slot
     int temp = this->board.at(row).at(col);
     this->board.at(row).at(col) = val;
-    
+
     // Check the vality of the change
-    if( !posCheck(row, col) ) { 
-        cout << "Can't Place this number here" << endl; 
+    if (!posCheck(row, col))
+    {
+        // cout << "Can't Place this number here" << endl;
         this->board.at(row).at(col) = temp;
 
         return false;
     }
-    
+
+    // Validate that the previout value in the postion was zero
+    if(temp == 0)
+    {
+        this->emptyCount--;
+    }
     return true;
 }
 
-
-bool SudokuBoard::clearPos(int conceptual_row, int conceptual_col) {
+bool SudokuBoard::clearPos(int conceptual_row, int conceptual_col)
+{
 
     int row = conceptual_row - 1;
     int col = conceptual_col - 1;
@@ -111,26 +168,35 @@ bool SudokuBoard::clearPos(int conceptual_row, int conceptual_col) {
     // ---------------------------------------
 
     // Check the validity of the entered row number
-    if(row > 9 || row < 0) { cout << "Wrong Row Number" << endl; return false; }
-    
+    if (row > 8 || row < 0)
+    {
+        cout << "Wrong Row Number" << endl;
+        return false;
+    }
+
     // Check the validity of the entered column cumer
-    if(col > 9 || col < 0) { cout << "Wrong Column Number" << endl; return false; }
-    
+    if (col > 8 || col < 0)
+    {
+        cout << "Wrong Column Number" << endl;
+        return false;
+    }
+
+    // Validate that the postion was not already empty
+    if(this->board.at(row).at(col) != 0) {
+        this->emptyCount++;
+    }
+
     this->board.at(row).at(col) = 0;
     return true;
 }
 
+void SudokuBoard::demoBoard()
+{
 
-
-
-void SudokuBoard::demoBoard() {
-    
-    
     // ---------------------------------------
     // Hard coding the demo construction of the board.
     // ---------------------------------------
-    
-    
+
     board.at(0).at(0) = 5;
     board.at(0).at(1) = 3;
     board.at(0).at(4) = 7;
@@ -169,4 +235,6 @@ void SudokuBoard::demoBoard() {
     board.at(8).at(4) = 8;
     board.at(8).at(7) = 7;
     board.at(8).at(8) = 9;
+
+    this->countEmpty();
 }

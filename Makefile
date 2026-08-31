@@ -3,8 +3,8 @@ CXXFLAGS = -Wall -Wextra -std=c++17
 
 TARGET = SudokuTest.exe
 
-$(TARGET): SudokuBoard.cpp Test.cpp
-	$(CXX) $(CXXFLAGS) SudokuBoard.cpp Test.cpp -o $(TARGET)
+$(TARGET): SudokuBoard.cpp SudokuSolver.cpp Test.cpp
+	$(CXX) $(CXXFLAGS) SudokuBoard.cpp SudokuSolver.cpp Test.cpp -o $(TARGET)
 
 run: $(TARGET)
 	.\$(TARGET)

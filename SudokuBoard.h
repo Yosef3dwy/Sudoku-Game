@@ -1,3 +1,6 @@
+#ifndef SUDOKUBOARD_H
+#define SUDOKUBOARD_H
+
 #include <iostream>
 #include <vector>
 
@@ -5,10 +8,14 @@ class SudokuBoard {
 
 private:
     std::vector<std::vector<int>> board;
+    int emptyCount;
 
     
     // Validity check helper method 
     bool posCheck(int row, int col);
+
+    // Count all the empty positions
+    void countEmpty();
     
 public:
     SudokuBoard();
@@ -17,6 +24,9 @@ public:
     // Return the number in a position on the Board
     int getPos(int conceptual_row, int conceptual_col);
 
+    // Return emtpyCounter
+    int getEmptyCount();
+    
     // Change the value the exists in a position on the Board
     bool placePos(int conceptual_row, int conceptual_col, int val);
 
@@ -26,3 +36,7 @@ public:
     // Hard coded mid level construction of the board (Testing)
     void demoBoard();
 };
+
+
+
+#endif

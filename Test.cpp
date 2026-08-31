@@ -1,5 +1,7 @@
 #include <iostream>
 #include "SudokuBoard.h"
+#include "SudokuSolver.h"
+
 
 using namespace std;
 
@@ -31,6 +33,13 @@ int main() {
     cout << ((SuBoard.placePos(1, 32, 4))? "Placed Successful": "Failed to Place")  << endl << endl;
     cout << ((SuBoard.placePos(1, 2, 14))? "Placed Successful": "Failed to Place")  << endl << endl;
     
+    // ---------------------------------------
+    // Solving Test
+    // ---------------------------------------
+
+    SudokuSolver& SuSolver = SudokuSolver::instance(SuBoard);
+    SuSolver.boardSolver();
+
     // ---------------------------------------
     // Display Board
     // ---------------------------------------
